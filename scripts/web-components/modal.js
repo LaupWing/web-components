@@ -51,6 +51,8 @@ export default class Modal extends HTMLElement{
         `
         this._title   = 'Warning'
         this._titleEl = this.shadowRoot.querySelector('#modal h2')
+        this.shadowRoot.querySelector('button').addEventListener('click', this._close.bind(this))
+        this.shadowRoot.querySelector('#backdrop').addEventListener('click', this._close.bind(this))
         this.opened   = false
     }
     connectedCallback(){
@@ -58,6 +60,14 @@ export default class Modal extends HTMLElement{
             this._title = this.getAttribute('title')
         }
         this._titleEl.textContent = this._title
+    }
+    _close(){
+        this.opened = false
+        this.removeAttribute('open')
+    }
+    open(){
+        this.opened = true
+        this.setAttribute('open', '')
     }
 }
 

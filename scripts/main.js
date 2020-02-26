@@ -1,7 +1,8 @@
-import modal from './web-components/modal.js'
+import './web-components/modal.js'
 
 const init = ()=>{
-    console.log('initialize')
+    const modal = document.querySelector('laup-modal')
+    document.querySelector('button').addEventListener('click',()=> modal.open())
 }
 
 window.addEventListener('load', init)
