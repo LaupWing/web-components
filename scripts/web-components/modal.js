@@ -97,11 +97,15 @@ export default class Modal extends HTMLElement{
         this.opened    = false
     }
     connectedCallback(){
+        console.log(this.shadowRoot.querySelector('style'))
         if(this.hasAttribute('title')){
             this._title = this.getAttribute('title')
         }
         if(this.hasAttribute('animation')){
             this._animation = this.getAttribute('animation')
+        }
+        if(this.hasAttribute('styles')){
+            this.shadowRoot.querySelector('style').append(`@import url${this.getAttribute('styles')}`)
         }
         if(this.hasAttribute('description')){
             this._description = this.getAttribute('description')
