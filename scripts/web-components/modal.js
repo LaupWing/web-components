@@ -105,7 +105,7 @@ export default class Modal extends HTMLElement{
             this._animation = this.getAttribute('animation')
         }
         if(this.hasAttribute('styles')){
-            this.shadowRoot.querySelector('style').append(`@import url${this.getAttribute('styles')}`)
+            this.shadowRoot.querySelector('style').append(`@import url('${this.getAttribute('styles')}')`)
         }
         if(this.hasAttribute('description')){
             this._description = this.getAttribute('description')
