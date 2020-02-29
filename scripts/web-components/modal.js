@@ -83,6 +83,7 @@ export default class Modal extends HTMLElement{
             <div id="backdrop"></div>
             <div id="modal">
                 <h2></h2>
+                <slot></slot>
                 <button>Okay</button>
             </div>
         `
