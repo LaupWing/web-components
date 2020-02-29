@@ -79,6 +79,9 @@ export default class Modal extends HTMLElement{
                 #modal h2{
                     margin: 0;
                 }
+                #modal p{
+                    margin: 10px;
+                }
             </style>
             <div id="backdrop"></div>
             <div id="modal">
