@@ -9,6 +9,21 @@ export default class Modal extends HTMLElement{
                     pointer-events: all;
                     opacity:1;
                 }
+                :host([open]) #modal.left{
+                    top: 40vh;
+                    left: 50vw;
+                    transform: translateX(-50%);
+                }
+                :host([open]) #modal.top{
+                    top: 40vh;
+                    left: 50vw;
+                    transform: translateX(-50%);
+                }
+                :host([open]) #modal.right{
+                    top: 40vh;
+                    right: 50vw;
+                    transform: translateX(50%);
+                }
                 #backdrop{
                     position: fixed;
                     top: 0;
@@ -22,13 +37,12 @@ export default class Modal extends HTMLElement{
                     pointer-events: none;
                     opacity:0;
                     background-color: rgba(0,0,0,.5);
+                    transition: .5s all;
                 }
                 #modal{
                     padding: 10px 15px;
                     position: fixed;
                     top: 40vh;
-                    left: 50vw;
-                    transform: translateX(-50%);
                     margin:auto;
                     z-index: 100;
                     background: white;
@@ -38,6 +52,18 @@ export default class Modal extends HTMLElement{
                     display: flex;
                     flex-direction: column;
                     align-items: center;
+                    transition: .5s all;
+                }
+                #modal.top{
+                    top: -30vw;
+                    transform: translateX(-50%);
+                    left: 50vw;
+                }
+                #modal.left{
+                    left: -30vw;
+                }
+                #modal.right{
+                    right: -30vw;
                 }
                 #modal h2{
                     margin: 0;
@@ -49,24 +75,37 @@ export default class Modal extends HTMLElement{
                 <button>Okay</button>
             </div>
         `
-        this._title   = 'Warning'
-        this._titleEl = this.shadowRoot.querySelector('#modal h2')
+        this._title     = 'Warning'
+        this._animation = 'top'
+        this._titleEl   = this.shadowRoot.querySelector('#modal h2')
+        this._modalEl   = this.shadowRoot.querySelector('#modal')
         this.shadowRoot.querySelector('button').addEventListener('click', this._close.bind(this))
         this.shadowRoot.querySelector('#backdrop').addEventListener('click', this._close.bind(this))
-        this.opened   = false
+        this.opened    = false
     }
     connectedCallback(){
         if(this.hasAttribute('title')){
-            this._title = this.getAttribute('title')
+            this._title     = this.getAttribute('title')
+            this._animation = this.getAttribute('animation')
         }
         this._titleEl.textContent = this._title
+        this._modalEl.classList.add(this._animation)
+    }
+    attributeChangedCallback(name, oldValue, newLValue){
+        switch(name){
+            case 'open':
+                this.opened = !this.opened
+                break
+            default: null
+        }
+    }
+    static get observedAttributes(){
+        return ['open']
     }
     _close(){
-        this.opened = false
         this.removeAttribute('open')
     }
     open(){
-        this.opened = true
         this.setAttribute('open', '')
     }
 }
