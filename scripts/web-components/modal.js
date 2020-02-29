@@ -19,6 +19,11 @@ export default class Modal extends HTMLElement{
                     left: 50vw;
                     transform: translateX(-50%);
                 }
+                :host([open]) #modal.bottom{
+                    bottom: 60vh;
+                    left: 50vw;
+                    transform: translateX(-50%);
+                }
                 :host([open]) #modal.right{
                     top: 40vh;
                     right: 50vw;
@@ -42,7 +47,6 @@ export default class Modal extends HTMLElement{
                 #modal{
                     padding: 10px 15px;
                     position: fixed;
-                    top: 40vh;
                     margin:auto;
                     z-index: 100;
                     background: white;
@@ -59,11 +63,18 @@ export default class Modal extends HTMLElement{
                     transform: translateX(-50%);
                     left: 50vw;
                 }
+                #modal.bottom{
+                    bottom: -30vw;
+                    transform: translateX(-50%);
+                    left: 50vw;
+                }
                 #modal.left{
                     left: -30vw;
+                    top: 40vh;
                 }
                 #modal.right{
                     right: -30vw;
+                    top: 40vh;
                 }
                 #modal h2{
                     margin: 0;
@@ -76,7 +87,7 @@ export default class Modal extends HTMLElement{
             </div>
         `
         this._title     = 'Warning'
-        this._animation = 'top'
+        this._animation = 'bottom'
         this._titleEl   = this.shadowRoot.querySelector('#modal h2')
         this._modalEl   = this.shadowRoot.querySelector('#modal')
         this.shadowRoot.querySelector('button').addEventListener('click', this._close.bind(this))
@@ -91,16 +102,24 @@ export default class Modal extends HTMLElement{
         this._titleEl.textContent = this._title
         this._modalEl.classList.add(this._animation)
     }
-    attributeChangedCallback(name, oldValue, newLValue){
+    attributeChangedCallback(name, oldValue, newValue){
         switch(name){
             case 'open':
                 this.opened = !this.opened
                 break
+            case 'animation':
+                this._animation = newValue
+                this.changeModalClasses([this._animation])
+                break
             default: null
         }
     }
+    changeModalClasses(classes){
+        this._modalEl.className = ''
+        classes.forEach(cls=>this._modalEl.classList.add(cls))
+    }
     static get observedAttributes(){
-        return ['open']
+        return ['open', 'animation']
     }
     _close(){
         this.removeAttribute('open')
