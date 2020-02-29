@@ -83,12 +83,13 @@ export default class Modal extends HTMLElement{
             <div id="backdrop"></div>
             <div id="modal">
                 <h2></h2>
-                <slot></slot>
+                <p></p>
                 <button>Okay</button>
             </div>
         `
-        this._title     = 'Warning'
-        this._animation = 'bottom'
+        this._title       = 'Warning'
+        this._animation   = 'bottom'
+        this._description = null
         this._titleEl   = this.shadowRoot.querySelector('#modal h2')
         this._modalEl   = this.shadowRoot.querySelector('#modal')
         this.shadowRoot.querySelector('button').addEventListener('click', this._close.bind(this))
@@ -97,8 +98,16 @@ export default class Modal extends HTMLElement{
     }
     connectedCallback(){
         if(this.hasAttribute('title')){
-            this._title     = this.getAttribute('title')
+            this._title = this.getAttribute('title')
+        }
+        if(this.hasAttribute('animation')){
             this._animation = this.getAttribute('animation')
+        }
+        if(this.hasAttribute('description')){
+            this._description = this.getAttribute('description')
+            this._modalEl.querySelector('p').textContent = this._description
+        }else{
+            this._modalEl.removeChild(this._modalEl.querySelector('p'))
         }
         this._titleEl.textContent = this._title
         this._modalEl.classList.add(this._animation)
@@ -115,12 +124,12 @@ export default class Modal extends HTMLElement{
             default: null
         }
     }
+    static get observedAttributes(){
+        return ['open', 'animation']
+    }
     changeModalClasses(classes){
         this._modalEl.className = ''
         classes.forEach(cls=>this._modalEl.classList.add(cls))
-    }
-    static get observedAttributes(){
-        return ['open', 'animation']
     }
     _close(){
         this.removeAttribute('open')
